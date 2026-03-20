@@ -1,0 +1,152 @@
+%-------------------------
+% Resume in Latex
+% Author: Nathan Hoang
+% Template Base: Jake Gutierrez (MIT License)
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Balanced margins for perfect centering and one-page fit
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-0.85in}
+\addtolength{\textheight}{1.55in}
+
+\setlength{\tabcolsep}{0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{noitemsep, topsep=0pt, leftmargin=0.14in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-15pt}\scshape\raggedright\Large
+}{}{0em}{}[\color{black}\titlerule \vspace{-6pt}]
+
+% Ensure ATS readability
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{\item\normalsize{{#1 \vspace{0pt}}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{0pt}\item
+  \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{\normalsize #1} & \normalsize #2 \\
+    \textit{\small#3} & \textit{\small #4} \\
+  \end{tabular*}\vspace{0pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \normalsize #1 & \normalsize #2 \\
+  \end{tabular*}\vspace{0pt}
+}
+\newcommand{\resumeItemListStart}{\begin{itemize}[topsep=0pt, partopsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{0pt}}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.14in, label={}, topsep=0pt]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+
+\renewcommand\labelitemi{$\bullet$}
+
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape \VAR{meta.name}} \\ \vspace{1pt}
+    \small \VAR{meta.phone} $|$ \href{mailto:\VAR{meta.email}}{\underline{\VAR{meta.email}}} $|$
+    \href{https://\VAR{meta.linkedin}}{\underline{\VAR{meta.linkedin_display}}} $|$
+    \href{https://\VAR{meta.github}}{\underline{\VAR{meta.github_display}}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {\VAR{education.institution}}{\VAR{education.location}}
+    {\VAR{education.degree}}{\VAR{education.graduation}}
+    \resumeItemListStart
+      \resumeItem{GPA: \VAR{education.gpa}\BLOCK{if education.awards}; \VAR{education.awards}\BLOCK{endif}}
+      \resumeItem{\VAR{education.coursework_label | default('Coursework')}: \VAR{education.coursework}}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+
+\BLOCK{for exp in experiences}
+\resumeSubheading
+  {\VAR{exp.company}}{\VAR{exp.location}}
+  {\VAR{exp.title}}{\VAR{exp.start} -- \VAR{exp.end}}
+    \resumeItemListStart
+\BLOCK{for bullet in exp.bullets}
+\resumeItem{\VAR{bullet | latex_escape}}
+\BLOCK{endfor}
+    \resumeItemListEnd
+
+\BLOCK{endfor}
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+\resumeSubHeadingListStart
+
+\BLOCK{for project in projects}
+\resumeProjectHeading
+{\textbf{\VAR{project.name | latex_escape}} $|$ \emph{\VAR{project.tech_string | latex_escape}}}{\VAR{project.start} -- \VAR{project.end}}
+\resumeItemListStart
+\BLOCK{for bullet in project.bullets}
+\resumeItem{\VAR{bullet | latex_escape}}
+\BLOCK{endfor}
+\resumeItemListEnd
+
+\BLOCK{endfor}
+\resumeSubHeadingListEnd
+
+%-----------SKILLS-----------
+\section{Skills \& Technologies}
+\begin{itemize}[leftmargin=0.15in, label={}]
+\small
+\item{
+\textbf{Languages:} \VAR{skills.languages_str}. \\
+
+\textbf{Frameworks:} \VAR{skills.frameworks_str}. \\
+
+\textbf{Backend:} \VAR{skills.backend_str}. \\
+
+\textbf{Infrastructure:} \VAR{skills.infrastructure_str}. \\
+
+}
+\item{
+\textbf{Competitions:} \VAR{skills.competitions_str}.
+}
+\end{itemize}
+
+\end{document}
