@@ -1,0 +1,20 @@
+{
+  "legal_first_name": "Your",
+  "legal_last_name": "Name",
+  "preferred_name": "Your",
+  "address": {
+    "street": "",
+    "city": "",
+    "state": "CA",
+    "zip": "",
+    "country": "United States"
+  },
+  "work_authorization": true,
+  "requires_sponsorship": false,
+  "gender": "",
+  "race_ethnicity": "",
+  "veteran_status": false,
+  "disability_status": false,
+  "how_did_you_hear": "Company website",
+  "custom_answers": {}
+}

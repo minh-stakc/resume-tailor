@@ -5,3 +5,6 @@ __pycache__/
 *.aux
 *.log
 *.out
+data/master_resume.json
+data/applicant_profile.json
+jobs/

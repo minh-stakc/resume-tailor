@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "name": "Your Name",
+    "phone": "+1 (000) 000-0000",
+    "email": "your.email@example.com",
+    "linkedin": "",
+    "linkedin_display": "",
+    "github": "github.com/your-username",
+    "github_display": "github.com/your-username"
+  },
+  "education": {
+    "institution": "Your University",
+    "location": "City, ST",
+    "degree": "B.S. Computer Science",
+    "graduation": "May 2028",
+    "gpa": "4.0/4.0",
+    "awards": "",
+    "coursework_label": "Coursework",
+    "coursework": "Course 1, Course 2, Course 3"
+  },
+  "variants": {
+    "stanford": {
+      "meta": { "name": "Your Name", "phone": "+1 (000) 000-0000", "email": "you@stanford.edu", "linkedin": "", "linkedin_display": "", "github": "github.com/your-username", "github_display": "github.com/your-username" },
+      "education": { "institution": "Stanford University", "location": "Stanford, CA", "degree": "B.S. Computer Science", "graduation": "May 2028", "gpa": "4.0/4.0", "awards": "", "coursework_label": "Coursework", "coursework": "Course 1, Course 2" }
+    }
+  },
+  "experiences": [
+    {
+      "id": "example_job",
+      "company": "Company Name",
+      "location": "City, ST",
+      "title": "Software Engineer Intern",
+      "start": "Jun 2025",
+      "end": "Aug 2025",
+      "university": null,
+      "bullets": [
+        { "id": "ej_1", "text": "Built a feature that did X, resulting in Y% improvement.", "tags": ["Python", "REST APIs"] },
+        { "id": "ej_2", "text": "Designed and implemented Z using A and B technologies.", "tags": ["AWS", "Docker"] }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "example_project",
+      "name": "Project Name",
+      "tech": ["Python", "TensorFlow"],
+      "start": "Jan 2025",
+      "end": "Mar 2025",
+      "bullets": [
+        "Built X that does Y, achieving Z% accuracy.",
+        "Implemented A using B, reducing C by D%."
+      ],
+      "tags": ["ML", "Python", "deep-learning"],
+      "generated": false
+    }
+  ],
+  "skills": {
+    "languages": ["Python", "Java", "C++"],
+    "frameworks": ["TensorFlow", "React", "Flask"],
+    "backend": ["REST APIs", "microservices"],
+    "infrastructure": ["AWS", "Docker", "Git"],
+    "domains": ["Machine Learning", "Computer Vision"],
+    "competitions": [],
+    "certifications": []
+  }
+}
