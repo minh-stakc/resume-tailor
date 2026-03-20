@@ -187,12 +187,77 @@ def cmd_tailor(args):
         run_single(master, jd_text, output_path, args.threshold, args.compile, uni)
 
 
+def cmd_apply(args):
+    """Scrape JD from URL, tailor resume, and auto-fill the application form."""
+    if not config.ANTHROPIC_API_KEY:
+        print("[ERROR] ANTHROPIC_API_KEY environment variable not set.", file=sys.stderr)
+        sys.exit(1)
+
+    from urllib.parse import urlparse
+    from src.scraper import open_job_page
+    from src.ats import detect_ats
+    from src.applicant import load_applicant_info
+    from src.form_filler import fill_application
+
+    url = args.url
+
+    # Derive job name from URL if not provided
+    if args.name:
+        job_name = args.name
+    else:
+        parsed = urlparse(url)
+        # Use last meaningful path segment as job name
+        path_parts = [p for p in parsed.path.strip("/").split("/") if p]
+        job_name = path_parts[-1] if path_parts else "job"
+        job_name = re.sub(r"[^a-zA-Z0-9_-]", "_", job_name)
+
+    university = args.university
+
+    # Step 1: Detect ATS platform
+    adapter = detect_ats(url)
+
+    # Step 2: Open page and scrape JD
+    print(f"[*] Opening {url}")
+    jd_text, page, context, browser = open_job_page(url)
+
+    # Use adapter's JD extraction if available (more targeted)
+    adapter_jd = adapter.extract_jd(page)
+    if len(adapter_jd) > 200:
+        jd_text = adapter_jd
+
+    # Save JD
+    os.makedirs(config.JOBS_DIR, exist_ok=True)
+    job_path = os.path.join(config.JOBS_DIR, f"{job_name}.txt")
+    with open(job_path, "w", encoding="utf-8") as f:
+        f.write(jd_text)
+    print(f"[OK] Saved JD to: {job_path}")
+
+    # Step 3: Tailor resume and compile PDF
+    master = load_master_resume(args.resume)
+    output_path = os.path.join(config.OUTPUT_DIR, job_name, f"{university}.tex")
+    run_single(master, jd_text, output_path, args.threshold, True, university)
+
+    pdf_path = os.path.abspath(output_path.replace(".tex", ".pdf"))
+    if not os.path.exists(pdf_path):
+        print("[ERROR] PDF was not generated. Cannot fill application.", file=sys.stderr)
+        context.close()
+        browser.close()
+        sys.exit(1)
+
+    # Step 4: Load applicant info
+    applicant_info = load_applicant_info(university, master_path=args.resume)
+
+    # Step 5: Fill application form
+    fill_application(page, context, browser, adapter, applicant_info, pdf_path)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="AI-powered resume tailor using Claude."
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
+    # --- tailor command ---
     tailor = sub.add_parser("tailor", help="Tailor resume to a job description")
     jd_source = tailor.add_mutually_exclusive_group(required=True)
     jd_source.add_argument("--job", help="Path to job description file (or - for stdin)")
@@ -205,11 +270,23 @@ def main():
     tailor.add_argument("--university", choices=["stanford", "uf", "both"], default="both",
                         help="Which university variant to generate (default: both)")
 
+    # --- apply command ---
+    apply_cmd = sub.add_parser("apply", help="Scrape JD from URL, tailor resume, and auto-fill application form")
+    apply_cmd.add_argument("--url", required=True, help="URL of the job posting")
+    apply_cmd.add_argument("--name", help="Job name for output files (auto-derived from URL if omitted)")
+    apply_cmd.add_argument("--university", choices=["stanford", "uf"], required=True,
+                           help="University variant to use (required — you apply as one identity)")
+    apply_cmd.add_argument("--resume", default=config.MASTER_RESUME, help="Path to master_resume.json")
+    apply_cmd.add_argument("--threshold", type=int, default=config.PROJECT_RELEVANCE_THRESHOLD,
+                           help="Project relevance threshold 1-10 (default: 6)")
+
     args = parser.parse_args()
     if args.command == "tailor":
         if args.job and not args.output:
             parser.error("--output is required when using --job")
         cmd_tailor(args)
+    elif args.command == "apply":
+        cmd_apply(args)
 
 
 if __name__ == "__main__":

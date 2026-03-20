@@ -31,4 +31,10 @@ TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "templates")
 JOBS_DIR = os.path.join(os.path.dirname(__file__), "jobs")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
 MASTER_RESUME = os.path.join(DATA_DIR, "master_resume.json")
+APPLICANT_PROFILE = os.path.join(DATA_DIR, "applicant_profile.json")
 RESUME_TEMPLATE = os.path.join(TEMPLATES_DIR, "resume.tex.j2")
+
+# Playwright / browser automation
+PLAYWRIGHT_HEADLESS = False   # always headful for user review
+PLAYWRIGHT_SLOW_MO = 100      # ms delay between actions for stability
+BROWSER_TIMEOUT = 30000        # ms timeout for page loads
