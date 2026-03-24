@@ -20,9 +20,10 @@ MAX_RETRIES = 3
 RETRY_DELAY = 2  # seconds
 
 # pdflatex binary (auto-detected, can override with PDFLATEX env var)
+import shutil
 PDFLATEX = os.environ.get(
     "PDFLATEX",
-    r"C:\Users\hoang\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe",
+    shutil.which("pdflatex") or r"C:\Program Files\MiKTeX\miktex\bin\x64\pdflatex.exe",
 )
 
 # Paths
